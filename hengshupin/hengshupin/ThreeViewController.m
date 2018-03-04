@@ -7,6 +7,7 @@
 //
 
 #import "ThreeViewController.h"
+#import "AppDelegate.h"
 #import <Masonry.h>
 @interface ThreeViewController ()
 
@@ -17,6 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self setPor];
      NSLog(@"%@,%f",[self class],[UIScreen mainScreen].bounds.size.width);
      self.view.backgroundColor = [UIColor whiteColor];
     [self addview];
@@ -40,14 +42,31 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)setPor{
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    delegate.allowRotation = NO;
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+        
+        SEL selector = NSSelectorFromString(@"setOrientation:");
+        
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        
+        [invocation setSelector:selector];
+        
+        [invocation setTarget:[UIDevice currentDevice]];
+        
+        int val = UIInterfaceOrientationPortrait;
+        
+        // 从2开始是因为0 1 两个参数已经被selector和target占用
+        
+        [invocation setArgument:&val atIndex:2];
+        
+        [invocation invoke];
+        
+    }
+    
 }
-*/
+
 
 @end

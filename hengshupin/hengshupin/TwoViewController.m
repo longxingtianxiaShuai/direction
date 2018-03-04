@@ -6,6 +6,10 @@
 //  Copyright © 2018年 高帅. All rights reserved.
 //
 
+/*
+ https://github.com/longxingtianxiaShuai/direction.git. 屏幕旋转没有问题 但是旋转后获取到的宽带和屏幕方向不匹配NSLog(@"%@,%f",[self class],[UIScreen mainScreen].bounds.size.width);    TwoViewController,375.000000  TwoViewController是竖屏
+ */
+
 #import "TwoViewController.h"
 #import "ThreeViewController.h"
 #import "AppDelegate.h"
@@ -20,6 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self setHor];
     NSLog(@"%@,%f",[self class],[UIScreen mainScreen].bounds.size.width);
     
      self.view.backgroundColor = [UIColor whiteColor];
@@ -55,12 +60,14 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-   
-    [self setHor];
+    
+    
+   [self setHor];
+    
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-     [self setPor];
+     
 }
 - (void)pushToT{
     ThreeViewController *threevc = [[ThreeViewController alloc] init];
@@ -96,31 +103,6 @@
     }
     
 
-}
-- (void)setPor{
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    
-    delegate.allowRotation = NO;
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-        
-        SEL selector = NSSelectorFromString(@"setOrientation:");
-        
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-        
-        [invocation setSelector:selector];
-        
-        [invocation setTarget:[UIDevice currentDevice]];
-        
-        int val = UIInterfaceOrientationPortrait;
-        
-        // 从2开始是因为0 1 两个参数已经被selector和target占用
-        
-        [invocation setArgument:&val atIndex:2];
-        
-        [invocation invoke];
-        
-    }
-    
 }
 
 
